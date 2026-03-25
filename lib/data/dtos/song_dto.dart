@@ -12,6 +12,7 @@ class SongDto {
     assert(json[titleKey] is String);
     assert(json[artistIdKey] is String);
     assert(json[durationKey] is int);
+    assert(json[imageKey] is String);
 
     return Song(
       // id: json[idKey],
@@ -29,6 +30,7 @@ class SongDto {
       titleKey: song.title,
       artistIdKey: song.artistId,
       durationKey: song.duration.inMilliseconds,
+      imageKey: song.image
     };
   }
 }
