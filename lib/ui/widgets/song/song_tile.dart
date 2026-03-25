@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:week09_firebase/ui/utils/duration_format.dart';
 
 import '../../../model/songs/song.dart';
 
@@ -29,6 +30,7 @@ class SongTile extends StatelessWidget {
           ),
           onTap: onTap,
           title: Text(song.title),
+          subtitle: Text(DurationFormat(song.duration)),
           trailing: Text(
             isPlaying ? "Playing" : "",
             style: TextStyle(color: Colors.amber),
