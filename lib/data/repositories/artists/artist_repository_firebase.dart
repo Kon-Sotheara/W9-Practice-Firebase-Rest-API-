@@ -19,7 +19,7 @@ class ArtistRepositoryFirebase extends ArtistRepository {
     if (response.statusCode == 200) {
       Map<String, dynamic> artistJson = json.decode(response.body);
       for (var literable in artistJson.entries) {
-        result.add(ArtistDto.fromJson(literable.value));
+        result.add(ArtistDto.fromJson(literable.key ,literable.value));
       }
       return result;
     } else {

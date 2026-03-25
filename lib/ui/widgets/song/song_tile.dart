@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:week09_firebase/model/artists/artist.dart';
 import 'package:week09_firebase/ui/utils/duration_format.dart';
 
 import '../../../model/songs/song.dart';
@@ -9,8 +10,10 @@ class SongTile extends StatelessWidget {
     required this.song,
     required this.isPlaying,
     required this.onTap,
+    required this.artist,
   });
 
+  final Artist artist;
   final Song song;
   final bool isPlaying;
   final VoidCallback onTap;
@@ -22,7 +25,7 @@ class SongTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15)
+          borderRadius: BorderRadius.circular(15),
         ),
         child: ListTile(
           leading: CircleAvatar(
@@ -30,7 +33,7 @@ class SongTile extends StatelessWidget {
           ),
           onTap: onTap,
           title: Text(song.title),
-          subtitle: Text(DurationFormat(song.duration)),
+          subtitle: Text("${DurationFormat(song.duration)} ~ ${artist.name} - ${artist.genre}"),
           trailing: Text(
             isPlaying ? "Playing" : "",
             style: TextStyle(color: Colors.amber),

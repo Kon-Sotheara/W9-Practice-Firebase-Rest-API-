@@ -1,12 +1,14 @@
 class Artist {
+  final String id;
   final String name;
   final String genre;
   final Uri image;
 
   Artist({
-    required this.name, 
-    required this.genre, 
-    required this.image
+    required this.id,
+    required this.name,
+    required this.genre,
+    required this.image,
   });
 
   @override
