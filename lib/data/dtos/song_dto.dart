@@ -13,7 +13,7 @@ class SongDto {
     assert(json[artistIdKey] is String);
     assert(json[durationKey] is int);
     assert(json[imageKey] is String);
-    assert(json[likeKey] is int);
+    assert(json[likeKey] == null || json[likeKey] is int);
 
     return Song(
       id: id,
@@ -21,7 +21,7 @@ class SongDto {
       artistId: json[artistIdKey],
       duration: Duration(milliseconds: json[durationKey]),
       image: Uri.parse(json[imageKey]), 
-      likes: json[likeKey],
+      likes: json[likeKey] ?? 0,
     );
   }
 
@@ -31,7 +31,7 @@ class SongDto {
       titleKey: song.title,
       artistIdKey: song.artistId,
       durationKey: song.duration.inMilliseconds,
-      imageKey: song.image,
+      imageKey: song.image.toString(),
       likeKey: song.likes
     };
   }

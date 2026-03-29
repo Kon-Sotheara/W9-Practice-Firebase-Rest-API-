@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week09_firebase/model/artists/artist.dart';
+import 'package:week09_firebase/ui/screens/artist/artist_detail_screen.dart';
 import 'package:week09_firebase/ui/screens/artist/view_model/artist_view_model.dart';
 import 'package:week09_firebase/ui/theme/theme.dart';
 import 'package:week09_firebase/ui/utils/async_value.dart';
@@ -26,6 +27,7 @@ class ArtistContent extends StatelessWidget {
             style: TextStyle(color: Colors.red),
           ),
         );
+        break;
 
       case AsyncValueState.success:
         List<Artist> artists = asyncValue.data!;
@@ -37,7 +39,16 @@ class ArtistContent extends StatelessWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             itemCount: artists.length,
             itemBuilder: (context, index) =>
-                ArtistTile(artist: artists[index], onTap: () {}),
+                ArtistTile(
+                  artist: artists[index],
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ArtistDetailScreen(artist: artists[index]),
+                      ),
+                    );
+                  },
+                ),
           ),
         );
     }
