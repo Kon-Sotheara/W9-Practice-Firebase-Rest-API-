@@ -1,16 +1,14 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:week09_firebase/data/config/firebase_config.dart';
 
 import '../../../model/songs/song.dart';
 import '../../dtos/song_dto.dart';
 import 'song_repository.dart';
 
 class SongRepositoryFirebase extends SongRepository {
-  final Uri songsUri = Uri.https(
-    'week09-firebase-default-rtdb.asia-southeast1.firebasedatabase.app',
-    '/songs.json',
-  );
+  final Uri songsUri = FirebaseConfig.baseUir.replace(path:'/songs.json');
 
   @override
   Future<List<Song>> fetchSongs() async {
