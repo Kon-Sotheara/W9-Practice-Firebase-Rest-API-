@@ -22,7 +22,7 @@ class SongRepositoryFirebase extends SongRepository {
       Map<String, dynamic> songJson = json.decode(response.body);
       // return songJson.map((item) => SongDto.fromJson(item)).toList();
       for (var literable in songJson.entries) {
-       result.add(SongDto.fromJson(literable.value));
+        result.add(SongDto.fromJson(literable.value));
       }
       return result;
     } else {
@@ -32,5 +32,7 @@ class SongRepositoryFirebase extends SongRepository {
   }
 
   @override
-  Future<Song?> fetchSongById(String id) async {}
+  Future<Song?> fetchSongById(String id) async {
+    return null; // we gonna update later
+  }
 }
