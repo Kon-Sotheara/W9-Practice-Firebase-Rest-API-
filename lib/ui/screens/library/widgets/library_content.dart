@@ -40,6 +40,9 @@ class LibraryContent extends StatelessWidget {
             onTap: () {
               vm.start(songs[index]);
             },
+            onLike: () {
+              vm.likeSong(songs[index]);
+            },
           ),
         );
     }

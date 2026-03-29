@@ -56,6 +56,16 @@ class LibraryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void likeSong (Song song) {
+    try {
+      songRepository.likeSong(song.id, song.likes);
+      song.likes++;
+      notifyListeners();
+    } catch (e){
+       print('Error liking song: $e');
+    }
+  }
+
   Artist getArtistName(String id) => artistMap[id]!;
 
   bool isSongPlaying(Song song) => playerState.currentSong == song;

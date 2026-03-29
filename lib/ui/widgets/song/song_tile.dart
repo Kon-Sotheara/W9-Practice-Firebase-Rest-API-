@@ -11,12 +11,14 @@ class SongTile extends StatelessWidget {
     required this.isPlaying,
     required this.onTap,
     required this.artist,
+    required this.onLike
   });
 
   final Artist artist;
   final Song song;
   final bool isPlaying;
   final VoidCallback onTap;
+  final VoidCallback onLike;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +35,22 @@ class SongTile extends StatelessWidget {
           ),
           onTap: onTap,
           title: Text(song.title),
-          subtitle: Text("${DurationFormat(song.duration)} ~ ${artist.name} - ${artist.genre}"),
-          trailing: Text(
-            isPlaying ? "Playing" : "",
-            style: TextStyle(color: Colors.amber),
+          subtitle: Text(
+            "${DurationFormat(song.duration)} ~ ${artist.name} - ${artist.genre}  :  Likes ${song.likes}",
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                isPlaying ? "Playing" : "",
+                style: TextStyle(color: Colors.amber),
+              ),
+              const SizedBox(width: 10),
+              IconButton(
+                icon: const Icon(Icons.favorite, color: Colors.red),
+                onPressed: onLike,
+              )
+            ],
           ),
         ),
       ),

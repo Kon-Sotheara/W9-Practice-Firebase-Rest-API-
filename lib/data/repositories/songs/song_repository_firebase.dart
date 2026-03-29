@@ -8,7 +8,7 @@ import '../../dtos/song_dto.dart';
 import 'song_repository.dart';
 
 class SongRepositoryFirebase extends SongRepository {
-  final Uri songsUri = FirebaseConfig.baseUir.replace(path:'/songs.json');
+  final Uri songsUri = FirebaseConfig.baseUir.replace(path: '/songs.json');
 
   @override
   Future<List<Song>> fetchSongs() async {
@@ -20,7 +20,7 @@ class SongRepositoryFirebase extends SongRepository {
       Map<String, dynamic> songJson = json.decode(response.body);
       // return songJson.map((item) => SongDto.fromJson(item)).toList();
       for (var literable in songJson.entries) {
-        result.add(SongDto.fromJson(literable.value));
+        result.add(SongDto.fromJson(literable.key,literable.value));
       }
       return result;
     } else {
@@ -32,5 +32,23 @@ class SongRepositoryFirebase extends SongRepository {
   @override
   Future<Song?> fetchSongById(String id) async {
     return null; // we gonna update later
+  }
+
+  @override
+  Future<void> likeSong(String songId, int currentLike) async {
+    final Uri songsUri = FirebaseConfig.baseUir.replace(
+      path: '/songs/$songId.json',
+    );
+
+    final updatedLike = currentLike + 1;
+
+    final http.Response response = await http.patch(
+      songsUri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'likes': updatedLike}),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update like');
+    }
   }
 }
