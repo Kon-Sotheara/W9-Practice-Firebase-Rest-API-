@@ -31,18 +31,24 @@ class LibraryContent extends StatelessWidget {
         break;
       case AsyncValueState.success:
         List<Song> songs = asyncValue.data!;
-        content = ListView.builder(
-          itemCount: songs.length,
-          itemBuilder: (context, index) => SongTile(
-            artist: vm.getArtistName(songs[index].artistId),
-            song: songs[index],
-            isPlaying: vm.isSongPlaying(songs[index]),
-            onTap: () {
-              vm.start(songs[index]);
-            },
-            onLike: () {
-              vm.likeSong(songs[index]);
-            },
+        content = RefreshIndicator(
+          onRefresh: () async{
+            vm.fetchSong(forceFetch: true);
+          },
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: songs.length,
+            itemBuilder: (context, index) => SongTile(
+              artist: vm.getArtistName(songs[index].artistId),
+              song: songs[index],
+              isPlaying: vm.isSongPlaying(songs[index]),
+              onTap: () {
+                vm.start(songs[index]);
+              },
+              onLike: () {
+                vm.likeSong(songs[index]);
+              },
+            ),
           ),
         );
     }
@@ -53,7 +59,19 @@ class LibraryContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 16),
-          Text("Library", style: AppTextStyles.heading),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Library", style: AppTextStyles.heading),
+              SizedBox(width: 10,),
+              IconButton(
+                icon: const Icon(Icons.refresh, color: Colors.blue,),
+                onPressed: () {
+                  vm.fetchSong(forceFetch: true);
+                },
+              )
+            ],
+          ),
           SizedBox(height: 50),
 
           Expanded(child: content),

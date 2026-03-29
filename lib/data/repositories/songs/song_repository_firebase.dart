@@ -9,9 +9,14 @@ import 'song_repository.dart';
 
 class SongRepositoryFirebase extends SongRepository {
   final Uri songsUri = FirebaseConfig.baseUir.replace(path: '/songs.json');
+  List<Song>? _cachedSongs;
 
   @override
-  Future<List<Song>> fetchSongs() async {
+  Future<List<Song>> fetchSongs({bool forceFetch = false}) async {
+    if (!forceFetch && _cachedSongs != null) {
+      return _cachedSongs!;
+    }
+
     final http.Response response = await http.get(songsUri);
     List<Song> result = [];
 
@@ -20,8 +25,11 @@ class SongRepositoryFirebase extends SongRepository {
       Map<String, dynamic> songJson = json.decode(response.body);
       // return songJson.map((item) => SongDto.fromJson(item)).toList();
       for (var literable in songJson.entries) {
-        result.add(SongDto.fromJson(literable.key,literable.value));
+        result.add(SongDto.fromJson(literable.key, literable.value));
       }
+
+      _cachedSongs = result;
+
       return result;
     } else {
       // 2- Throw expcetion if any issue

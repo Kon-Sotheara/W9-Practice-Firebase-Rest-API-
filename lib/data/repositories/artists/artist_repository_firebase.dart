@@ -7,19 +7,26 @@ import 'package:week09_firebase/data/repositories/artists/artist_repository.dart
 import 'package:week09_firebase/model/artists/artist.dart';
 
 class ArtistRepositoryFirebase extends ArtistRepository {
-  
   final Uri artistUri = FirebaseConfig.baseUir.replace(path: '/artists.json');
-  
+  List<Artist>? _cachedArtist;
+
   @override
-  Future<List<Artist>> fetchArtists() async {
+  Future<List<Artist>> fetchArtists({bool forceFetch = false}) async {
+    if (!forceFetch && _cachedArtist != null) {
+      return _cachedArtist!;
+    }
+
     final http.Response response = await http.get(artistUri);
     List<Artist> result = [];
 
     if (response.statusCode == 200) {
       Map<String, dynamic> artistJson = json.decode(response.body);
       for (var literable in artistJson.entries) {
-        result.add(ArtistDto.fromJson(literable.key ,literable.value));
+        result.add(ArtistDto.fromJson(literable.key, literable.value));
       }
+
+      _cachedArtist = result;
+
       return result;
     } else {
       throw Exception('Failed to load posts');

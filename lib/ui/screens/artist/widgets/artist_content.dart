@@ -29,26 +29,42 @@ class ArtistContent extends StatelessWidget {
 
       case AsyncValueState.success:
         List<Artist> artists = asyncValue.data!;
-        content = ListView.builder(
-          itemCount: artists.length,
-          itemBuilder: (context, index) => ArtistTile(
-            artist: artists[index],
-            onTap: () {
-              
-            },
+        content = RefreshIndicator(
+          onRefresh: () async {
+            mv.fetchArtists(forceFetch: true);
+          },
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: artists.length,
+            itemBuilder: (context, index) =>
+                ArtistTile(artist: artists[index], onTap: () {}),
           ),
         );
     }
 
-    return Padding(padding: const EdgeInsets.all(20.0), child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(height: 16),
-          Text("Artist", style: AppTextStyles.heading),
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Artist", style: AppTextStyles.heading),
+              SizedBox(width: 10,),
+              IconButton(
+                icon: const Icon(Icons.refresh, color: Colors.blue,),
+                onPressed: () {
+                  mv.fetchArtists(forceFetch: true);
+                },
+              )
+            ],
+          ),
           SizedBox(height: 50),
           Expanded(child: content),
-      ],
-    ),);
-
+        ],
+      ),
+    );
   }
 }
